@@ -1,122 +1,42 @@
 body {
-    margin: 0;
-    font-family: "Museo Sans Rounded", sans-serif;
-    background: #fffcda;
+    background: #f2f2f2;
+    font-family: Arial, sans-serif;
 }
 
-.navbar {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #001f4d;
-    height: 150px;
-    width: 100%;
-}
-
-.nav-content {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.logo {
-    height: 155px;
-    width: auto;
-}
-
-.nav-links {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
-
-.nav-links li {
-    display: inline;
-}
-
-.nav-links a {
-    color: #fffcda;
-    text-decoration: none;
-    font-size: 18px;
-    padding: 5px 10px;
-    font-weight: 400;
-    letter-spacing: 1px;
-}
-
-.nav-links a:hover {
-    color: #ffffff;
-}
-
-.main-content {
+.login-box {
+    width: 300px;
     padding: 40px;
+    background: #fff;
+    margin: 100px auto;
+    box-shadow: 0 15px 25px rgba(0,0,0,.5);
+    border-radius: 10px;
+}
+
+.login-box h2 {
+    margin: 0 0 20px;
     text-align: center;
 }
 
-.main-content h1 {
-    color: #001f4d;
-}
-
-.main-content p {
-    font-size: 18px;
-    color: #333;
-}
-
-.half-circle-rectangle {
-    width: 150px;
-    height: 90px;
-    background-color: #001f4d;
-    position: fixed;
-    top: 200px;
-    right: 0;
-    z-index: 1000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 2px 3px 4px rgba(0, 0, 0, 0.3),
-    4px 7px 15px rgba(0, 0, 0, 0.3),
-    9px 15px 25px rgba(0, 0, 0, 0.2);
-    transition: transform 0.2s ease-in-out;
-}
-
-.half-circle-rectangle::before {
-    content: "";
-    width: 90px;
-    height: 90px;
-    background-color: #001f4d;
-    border-radius: 45px 0 0 45px;
-    position: absolute;
-    left: -40px;
-    top: 0;
-    z-index: 999;
-}
-
-.profile-icon {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 10px;
+.login-box input {
+    width: 100%;
     padding: 10px;
-    width: 140px;
-    height: 70px;
-    background-color: #001f4d;
-    color: white;
-    text-decoration: none;
+    margin-bottom: 10px;
+    background: #f1f1f1;
     border: none;
+    outline: none;
+}
+
+.login-box button {
+    width: 100%;
+    padding: 10px;
+    background: #2196F3;
+    border: none;
+    color: white;
     cursor: pointer;
-    z-index: 1001;
 }
 
-.profile-icon img {
-    height: 50px;
-    width: 50px;
-    border-radius: 50%;
-    object-fit: cover;
-}
-
-.profile-icon span {
-    font-size: 18px;
-    font-weight: 500;
+.login-box .error {
+    color: red;
+    text-align: center;
+    margin-top: 10px;
 }

@@ -1,4 +1,4 @@
-package com.example.pahanaeduweb;
+package com.pahanaeduweb;
 
 import java.io.*;
 

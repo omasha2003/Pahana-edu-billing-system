@@ -1,28 +1,10 @@
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<!DOCTYPE html>
-<html lang="en">
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Pahana Edu - Home</title>
-    <link rel="stylesheet" type="text/css" href="css/style.css">
-
+    <title>Welcome - PahanaEdu</title>
 </head>
 <body>
-
-<%@ include file="navbar.jsp" %>
-
-<div class="main-content">
-    <h1>Welcome to Pahana Edu Bookshop</h1>
-    <p>Your trusted partner for educational books and materials in Colombo City.</p>
-</div>
-
-
-<div class="half-circle-rectangle">
-    <a href="login.jsp" class="profile-icon">
-        <img src="images/user.png" alt="User" />
-        <span>Login</span>
-    </a>
-</div>
-
+<h2>Welcome to PahanaEdu Bookshop System</h2>
+<p><a href="login.jsp">Login to System</a></p>
 </body>
 </html>
