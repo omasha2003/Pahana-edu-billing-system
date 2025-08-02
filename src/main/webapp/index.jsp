@@ -1,13 +1,28 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>JSP - Hello World</title>
+    <meta charset="UTF-8">
+    <title>Pahana Edu - Home</title>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+
 </head>
 <body>
-<h1><%= "Hello World!" %>
-</h1>
-<br/>
-<a href="hello-servlet">Hello Servlet</a>
+
+<%@ include file="navbar.jsp" %>
+
+<div class="main-content">
+    <h1>Welcome to Pahana Edu Bookshop</h1>
+    <p>Your trusted partner for educational books and materials in Colombo City.</p>
+</div>
+
+
+<div class="half-circle-rectangle">
+    <a href="login.jsp" class="profile-icon">
+        <img src="images/user.png" alt="User" />
+        <span>Login</span>
+    </a>
+</div>
+
 </body>
 </html>
