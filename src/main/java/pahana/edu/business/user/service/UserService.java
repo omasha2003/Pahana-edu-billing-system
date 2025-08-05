@@ -5,6 +5,8 @@ import pahana.edu.business.user.mapper.UserMapper;
 import pahana.edu.business.user.model.User;
 import pahana.edu.persistance.user.dao.UserDAO;
 
+import java.util.List;
+
 
 public class UserService {
     private UserDAO userDAO = new UserDAO();
@@ -16,6 +18,13 @@ public class UserService {
         }
         return null;
     }
+
+    public List<UserDTO> getAllUsers() {
+        return userDAO.getAllUsers();
+    }
+
+
+
 }
 
 

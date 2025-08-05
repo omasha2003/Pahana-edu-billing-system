@@ -1,6 +1,5 @@
 package pahana.edu.business.user.dto;
 
-
 public class UserDTO {
     private int id;
     private String username;
@@ -19,4 +18,6 @@ public class UserDTO {
 
     public String getRole() { return role; }
     public void setRole(String role) { this.role = role; }
+
+
 }

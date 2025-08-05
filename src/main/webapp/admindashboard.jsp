@@ -156,7 +156,7 @@
             <li><a href="manageCustomers.jsp">Manage Customers</a></li>
             <li><a href="manageItems.jsp">Manage Items</a></li>
             <li><a href="billing.jsp">Billing</a></li>
-            <li><a href="manageUsers.jsp">Manage Users</a></li>
+            <li><a href="manage-users">Manage Users</a></li>
             <li><a href="help.jsp">Help & Support</a></li>
         </ul>
     </nav>
