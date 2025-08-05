@@ -9,7 +9,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #C8D9E6 0%, #2F4156 100%);
             min-height: 100vh;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
@@ -29,7 +29,7 @@
             width: 100%;
         }
         .brand-section {
-            background: linear-gradient(135deg, #4e54c8 0%, #8f94fb 100%);
+            background: linear-gradient(135deg, #C8D9E6 0%, #2F4156 100%);
             color: white;
             padding: 4rem 2rem;
             text-align: center;
@@ -53,7 +53,7 @@
             box-shadow: 0 0 0 0.2rem rgba(78, 84, 200, 0.25);
         }
         .btn-login {
-            background: linear-gradient(135deg, #4e54c8 0%, #8f94fb 100%);
+            background: linear-gradient(135deg, #C8D9E6 0%, #2F4156 100%);
             border: none;
             border-radius: 10px;
             padding: 12px 30px;
@@ -84,7 +84,7 @@
 <div class="login-container">
     <div class="login-card">
         <div class="row g-0">
-            <!-- Brand Section -->
+
             <div class="col-md-5 brand-section">
                 <div class="h-100 d-flex flex-column justify-content-center">
                     <i class="fas fa-book-open brand-icon"></i>
@@ -99,13 +99,12 @@
                 </div>
             </div>
 
-            <!-- Form Section -->
+
             <div class="col-md-7 form-section">
                 <div class="text-center mb-4">
                     <h2 class="fw-bold text-dark">Welcome Back!</h2>
                     <p class="text-muted">Please sign in to your account</p>
 
-                    <%-- Error Message Display --%>
                     <%
                         String error = request.getParameter("error");
                         if ("invalid".equals(error)) {
@@ -162,7 +161,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-    // Toggle password visibility
+
     document.getElementById('togglePassword').addEventListener('click', function () {
         const password = document.getElementById('password');
         const icon = this.querySelector('i');
@@ -178,7 +177,6 @@
         }
     });
 
-    // Form validation and loading state
     document.getElementById('loginForm').addEventListener('submit', function (e) {
         const username = document.getElementById('username').value.trim();
         const password = document.getElementById('password').value;
@@ -190,7 +188,6 @@
             return;
         }
 
-        // Show loading state
         submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Signing In...';
         submitBtn.disabled = true;
     });
