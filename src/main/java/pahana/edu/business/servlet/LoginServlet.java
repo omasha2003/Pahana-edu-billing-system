@@ -40,5 +40,7 @@ public class LoginServlet extends HttpServlet {
         } else {
             response.sendRedirect("login.jsp?error=invalid");
         }
+        HttpSession session = request.getSession();
+        session.setAttribute("username", user.getUsername());
     }
 }

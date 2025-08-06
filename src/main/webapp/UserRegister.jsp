@@ -60,6 +60,15 @@
             background-color: #555;
         }
 
+        .register-container .cancel-btn {
+            background-color: #888;
+            margin-top: 10px;
+        }
+
+        .register-container .cancel-btn:hover {
+            background-color: #666;
+        }
+
         .register-container p {
             text-align: center;
             margin-top: 10px;
@@ -97,6 +106,7 @@
         </select>
 
         <button type="submit">Register</button>
+        <button type="button" class="cancel-btn" onclick="window.location.href='manage-users'">Cancel</button>
     </form>
 </div>
 

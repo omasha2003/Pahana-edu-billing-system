@@ -118,7 +118,7 @@
 
         .logout a {
             color: #F5EFEB;
-            font-size: 14px;
+            font-size: 16px;
             text-decoration: none;
         }
 
@@ -154,7 +154,7 @@
         <ul class="secondary-nav-links">
             <li><a href="admindashboard.jsp">Dashboard</a></li>
             <li><a href="manageCustomers.jsp">Manage Customers</a></li>
-            <li><a href="manageItems.jsp">Manage Items</a></li>
+            <li><a href="items">Manage Items</a></li>
             <li><a href="billing.jsp">Billing</a></li>
             <li><a href="manage-users">Manage Users</a></li>
             <li><a href="help.jsp">Help & Support</a></li>

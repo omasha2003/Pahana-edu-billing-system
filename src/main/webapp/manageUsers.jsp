@@ -119,7 +119,7 @@
     %>
 </table>
 
-<!-- Add New User Floating Button -->
+
 <div class="add-user-button">
     <a href="UserRegister.jsp" class="add-user-icon">
         +
