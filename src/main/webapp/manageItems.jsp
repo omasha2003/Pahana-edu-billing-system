@@ -6,10 +6,45 @@
 <head>
     <title>Manage Items</title>
     <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f6f8;
+        }
+
+        h2 {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .search-container {
+            text-align: center;
+            margin: 20px;
+        }
+
+        .search-container input[type="text"] {
+            padding: 10px;
+            width: 300px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+        }
+
+        .search-container button {
+            padding: 10px 16px;
+            background-color: #2F4156;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-left: 8px;
+        }
+
         table {
             width: 90%;
             border-collapse: collapse;
             margin: 30px auto;
+            background-color: white;
         }
 
         th, td {
@@ -20,11 +55,6 @@
 
         th {
             background-color: #f2f2f2;
-        }
-
-        h2 {
-            text-align: center;
-            margin-top: 30px;
         }
 
         .btn {
@@ -90,6 +120,15 @@
 
 <h2>Items List</h2>
 
+
+<div class="search-container">
+    <form method="get" action="items">
+        <input type="text" name="search" placeholder="Search by title or author" value="<%= request.getParameter("search") != null ? request.getParameter("search") : "" %>"/>
+        <button type="submit">Search</button>
+    </form>
+</div>
+
+
 <table>
     <tr>
         <th>ID</th>
@@ -102,7 +141,6 @@
         <th>Added By</th>
         <th>Added Date</th>
         <th>Action</th>
-
     </tr>
     <%
         List<ItemDTO> items = (List<ItemDTO>) request.getAttribute("items");
@@ -131,10 +169,15 @@
                 <button class="btn delete-btn">Delete</button>
             </form>
         </td>
-
     </tr>
     <%
-            }
+        }
+    } else {
+    %>
+    <tr>
+        <td colspan="10">No items found.</td>
+    </tr>
+    <%
         }
     %>
 </table>

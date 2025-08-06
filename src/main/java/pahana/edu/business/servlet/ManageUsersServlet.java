@@ -19,7 +19,6 @@ public class ManageUsersServlet extends HttpServlet {
 
         List<UserDTO> users = userService.getAllUsers();
 
-        // Debugging
         System.out.println("Fetched users: " + (users != null ? users.size() : "null"));
 
         request.setAttribute("users", users);

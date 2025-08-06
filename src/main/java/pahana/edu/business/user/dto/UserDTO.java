@@ -6,7 +6,6 @@ public class UserDTO {
     private String email;
     private String role;
 
-    // Getters and setters
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
 

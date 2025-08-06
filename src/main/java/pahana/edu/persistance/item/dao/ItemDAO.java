@@ -93,6 +93,43 @@ public class ItemDAO {
         }
     }
 
+    public List<ItemDTO> searchByTitleOrAuthor(String keyword) {
+        List<ItemDTO> items = new ArrayList<>();
+
+        String sql = "SELECT * FROM items WHERE title LIKE ? OR author LIKE ? OR category LIKE ?";
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            String searchPattern = "%" + keyword + "%";
+            stmt.setString(1, searchPattern);
+            stmt.setString(2, searchPattern);
+            stmt.setString(3, searchPattern);
+
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                ItemDTO item = new ItemDTO();
+                item.setId(rs.getInt("id"));
+                item.setTitle(rs.getString("title"));
+                item.setAuthor(rs.getString("author"));
+                item.setPrice(rs.getDouble("price"));
+                item.setQuantity(rs.getInt("quantity"));
+                item.setCategory(rs.getString("category"));
+                item.setLanguage(rs.getString("language"));
+                item.setAddedBy(rs.getString("added_by"));
+                item.setAddedDate(rs.getString("added_date"));
+                items.add(item);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return items;
+    }
+
+
 
 
 

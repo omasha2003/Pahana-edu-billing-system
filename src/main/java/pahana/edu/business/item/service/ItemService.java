@@ -27,4 +27,9 @@ public class ItemService {
     public void updateItem(ItemDTO item) {
         itemDAO.updateItem(item);
     }
+
+    public List<ItemDTO> searchByTitleOrAuthor(String keyword) {
+        return itemDAO.searchByTitleOrAuthor(keyword);
+    }
+
 }

@@ -31,10 +31,10 @@ public class RegisterUserServlet extends HttpServlet {
         boolean success = userDAO.insertUser(user);
 
         if (success) {
-            // Redirect to user list or login page after success
+
             response.sendRedirect("manage-users");
         } else {
-            // Could not insert user, show error or redirect back with error message
+
             request.setAttribute("errorMessage", "Registration failed. Please try again.");
             request.getRequestDispatcher("UserRegister.jsp").forward(request, response);
         }

@@ -16,7 +16,16 @@ public class ItemServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        List<ItemDTO> items = itemService.getAllItems();
+
+        String search = request.getParameter("search");
+        List<ItemDTO> items;
+
+        if (search != null && !search.trim().isEmpty()) {
+            items = itemService.searchByTitleOrAuthor(search.trim());
+        } else {
+            items = itemService.getAllItems();
+        }
+
         request.setAttribute("items", items);
         request.getRequestDispatcher("manageItems.jsp").forward(request, response);
     }
@@ -42,7 +51,6 @@ public class ItemServlet extends HttpServlet {
             return;
         }
 
-        // Default action - Add new item
         String title = request.getParameter("title");
         String author = request.getParameter("author");
         double price = Double.parseDouble(request.getParameter("price"));

@@ -13,6 +13,6 @@
     <p> gggggggggg </p>
 </head>
 <body>
-
+<jsp:include page="navbar.jsp" />
 </body>
 </html>
