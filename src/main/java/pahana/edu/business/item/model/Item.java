@@ -10,8 +10,10 @@ public class Item {
     private String language;
     private String addedBy;
     private String addedDate;
+    private String name;
+    private double total;
 
-    // Getters
+
     public int getId() {
         return id;
     }
@@ -47,6 +49,15 @@ public class Item {
     public String getAddedDate() {
         return addedDate;
     }
+
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+
+
+    public double getTotal() { return total; }
+    public void setTotal(double total) { this.total = total; }
+
+
 
     // Setters
     public void setId(int id) {

@@ -36,7 +36,6 @@ public class ItemMapper {
         return item;
     }
 
-    // ✅ This is what you're missing:
     public static ItemDTO map(ResultSet rs) throws SQLException {
         ItemDTO dto = new ItemDTO();
         dto.setId(rs.getInt("id"));

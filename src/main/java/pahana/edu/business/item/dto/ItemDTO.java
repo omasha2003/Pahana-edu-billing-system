@@ -11,7 +11,6 @@ public class ItemDTO {
     private String addedBy;
     private String addedDate;
 
-    // Getters and Setters
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
 

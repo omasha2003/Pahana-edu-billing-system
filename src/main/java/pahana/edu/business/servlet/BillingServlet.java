@@ -26,9 +26,17 @@ public class BillingServlet extends HttpServlet {
         String accountNumber = request.getParameter("accountNumber");
         String telephone = request.getParameter("telephone");
 
-        Map<String, String> customer = customerDAO.findCustomer(accountNumber, telephone);
+        if ((accountNumber != null && !accountNumber.isEmpty()) || (telephone != null && !telephone.isEmpty())) {
+            Map<String, String> customer = customerDAO.findCustomer(accountNumber, telephone);
+            if (customer != null) {
+                // Store in session for persistence across requests
+                request.getSession().setAttribute("customer", customer);
+            } else {
+                request.getSession().removeAttribute("customer");
+            }
+        }
 
-        request.setAttribute("customer", customer);
+        // Forward to JSP (customer info will be read from session in JSP)
         request.getRequestDispatcher("billing.jsp").forward(request, response);
     }
 
@@ -41,7 +49,12 @@ public class BillingServlet extends HttpServlet {
 
         if ("Add Item".equals(action)) {
             String bookSearch = request.getParameter("bookSearch");
-            int qty = Integer.parseInt(request.getParameter("quantity"));
+            int qty = 1;
+            try {
+                qty = Integer.parseInt(request.getParameter("quantity"));
+            } catch (NumberFormatException e) {
+                qty = 1;
+            }
 
             List<String[]> billItems = (List<String[]>) session.getAttribute("billItems");
             if (billItems == null) billItems = new ArrayList<>();
@@ -61,14 +74,8 @@ public class BillingServlet extends HttpServlet {
             }
 
             session.setAttribute("billItems", billItems);
-            // Keep customer in session to show info on refresh
-            if (session.getAttribute("customer") == null) {
-                String accountNumber = request.getParameter("accountNumber");
-                String telephone = request.getParameter("telephone");
-                Map<String, String> customer = customerDAO.findCustomer(accountNumber, telephone);
-                session.setAttribute("customer", customer);
-            }
 
+            // Redirect to billing.jsp to refresh and show updated bill items
             response.sendRedirect("billing.jsp");
 
         } else if ("Generate Bill".equals(action)) {

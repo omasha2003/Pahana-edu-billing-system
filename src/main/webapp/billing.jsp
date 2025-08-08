@@ -1,3 +1,6 @@
+<%@ page import="java.util.List" %>
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="java.util.Map" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -20,25 +23,38 @@
     <h3>Customer Details</h3>
     <form action="BillingServlet" method="get">
         <label>Account Number:</label>
-        <input type="text" name="accountNumber" placeholder="Enter Account Number">
+        <input type="text" name="accountNumber" placeholder="Enter Account Number" value="<%= request.getParameter("accountNumber") != null ? request.getParameter("accountNumber") : "" %>">
         <br><br>
         <label>Telephone:</label>
-        <input type="text" name="telephone" placeholder="Enter Telephone">
+        <input type="text" name="telephone" placeholder="Enter Telephone" value="<%= request.getParameter("telephone") != null ? request.getParameter("telephone") : "" %>">
         <br><br>
         <input type="submit" value="Search Customer">
     </form>
     <p>If customer not found, <a href="addcustomer.jsp">Register New Customer</a></p>
+
+    <%
+        // Prefer session attribute because it persists across requests
+        Map<String, String> customer = (Map<String, String>) session.getAttribute("customer");
+        if (customer != null) {
+    %>
+    <p><strong>Name:</strong> <%= customer.get("customer_name") %></p>
+    <p><strong>Address:</strong> <%= customer.get("address") %></p>
+    <p><strong>Telephone:</strong> <%= customer.get("telephone") %></p>
+    <p><strong>Account Number:</strong> <%= customer.get("account_number") %></p>
+    <% } %>
 </div>
 
 <!-- Item Search -->
 <div class="section">
     <h3>Add Item</h3>
     <form action="BillingServlet" method="post">
+        <input type="hidden" name="action" value="Add Item">
         <label>Book ID / Title:</label>
-        <input type="text" name="bookSearch" placeholder="Enter Book ID or Title">
+        <input type="text" name="bookSearch" placeholder="Enter Book ID or Title" required>
         <label>Quantity:</label>
-        <input type="number" name="quantity" value="1" min="1">
-        <input type="submit" name="action" value="Add Item">
+        <input type="number" name="quantity" value="1" min="1" required>
+        <br><br>
+        <input type="submit" value="Add Item">
     </form>
 </div>
 
@@ -54,11 +70,11 @@
             <th>Subtotal</th>
         </tr>
         <%
-            // Example placeholder data until you fetch from session or DB
-            String[][] items = {
-                    {"Java Basics", "John Doe", "1500.00", "1", "1500.00"},
-                    {"Spring Boot Guide", "Jane Smith", "2500.00", "2", "5000.00"}
-            };
+            List<String[]> items = (List<String[]>) session.getAttribute("billItems");
+            if (items == null) {
+                items = new ArrayList<>();
+            }
+
             double total = 0;
             for (String[] item : items) {
                 total += Double.parseDouble(item[4]);
@@ -79,6 +95,10 @@
 <div class="section">
     <h3>Payment</h3>
     <form action="BillingServlet" method="post">
+        <input type="hidden" name="action" value="Generate Bill">
+        <label>Cashier Name:</label>
+        <input type="text" name="cashierName" required>
+        <br><br>
         <label>Payment Method:</label>
         <select name="paymentMethod">
             <option value="Cash">Cash</option>
@@ -86,7 +106,7 @@
             <option value="Online">Online</option>
         </select>
         <br><br>
-        <input type="submit" name="action" value="Generate Bill">
+        <input type="submit" value="Generate Bill">
     </form>
 </div>
 
