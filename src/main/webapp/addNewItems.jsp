@@ -98,6 +98,9 @@
             <option value="Children">Children</option>
             <option value="Exam Guides">Exam Guides</option>
             <option value="Maths">Maths</option>
+            <option value="Fantasy">Fantasy</option>
+            <option value="Education">Education</option>
+            <option value="Finance">Finance</option>
         </select>
 
         <label for="language">Language:</label>

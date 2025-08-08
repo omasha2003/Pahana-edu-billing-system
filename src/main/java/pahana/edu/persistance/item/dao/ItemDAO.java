@@ -7,7 +7,9 @@ import pahana.edu.persistance.dbconnection.DBConnection;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ItemDAO {
 
@@ -39,7 +41,7 @@ public class ItemDAO {
 
             while (rs.next()) {
                 ItemDTO item = ItemMapper.map(rs);
-                System.out.println("DEBUG: Loaded item: " + item.getTitle()); // 👈 Add this line
+                System.out.println("DEBUG: Loaded item: " + item.getTitle());
                 items.add(item);
             }
         } catch (SQLException | ClassNotFoundException e) {
@@ -131,6 +133,25 @@ public class ItemDAO {
 
 
 
-
+    public Map<String, String> findItem(String bookSearch) {
+        Map<String, String> item = null;
+        String sql = "SELECT * FROM items WHERE id = ? OR title LIKE ? LIMIT 1";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, bookSearch);
+            stmt.setString(2, "%" + bookSearch + "%");
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                item = new HashMap<>();
+                item.put("id", rs.getString("id"));
+                item.put("title", rs.getString("title"));
+                item.put("author", rs.getString("author"));
+                item.put("price", rs.getString("price"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return item;
+    }
 
 }
