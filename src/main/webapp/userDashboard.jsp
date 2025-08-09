@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="pahana.edu.business.user.dto.UserDTO" %>
+<%@ page import="pahana.edu.persistance.Dashboard.UserDashboardDAO" %>
 <%
     UserDTO user = (UserDTO) session.getAttribute("user");
     if (user == null || !"user".equalsIgnoreCase(user.getRole())) {
@@ -7,6 +8,11 @@
         return;
     }
 
+    UserDashboardDAO dao = new UserDashboardDAO();
+    int totalCustomers = dao.getTotalCustomers();
+    int totalItems = dao.getTotalItems();
+    int totalBills = dao.getTotalBills();
+    int todaysCustomers = dao.getTodaysCustomers();
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -15,157 +21,85 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Dashboard</title>
-    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@100;300;400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <style>
         body {
+            font-family: 'Lato', sans-serif;
+            background-color: #f4f6f8;
             margin: 0;
-            font-family: "Lato", sans-serif;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-
-        .navbar {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-color: #2F4156;
-            height: 150px;
-            width: 100%;
-        }
-
-        .navbar-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-            padding: 0 30px;
-        }
-
-        .admin-portal {
-            text-align: left;
-            padding-left: 30px;
-            flex: 1;
-            font-size: 33px;
-            font-family: "Museo Sans Rounded", sans-serif;
-            font-weight: 400;
-            color: #fffcda;
-        }
-
-        .logo {
-            height: 100px;
-            width: auto;
-        }
-
-        .user-profile {
-            display: flex;
-            align-items: center;
-            margin-right: 20px;
-        }
-
-        .user-profile img {
-            height: 50px;
-            width: 50px;
-            border-radius: 50%;
-            object-fit: cover;
-            margin-right: 10px;
-        }
-
-        .username {
-            font-size: 18px;
-            margin-right: 20px;
-            color: #fffcda;
-        }
-
-        .secondary-navbar {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: linear-gradient(135deg, #C8D9E6 0%, #2F4156 100%);
-            height: 50px;
-            width: 100%;
-        }
-
-        .secondary-nav-links {
-            list-style: none;
             padding: 0;
-            margin: 0;
-            display: flex;
-            align-items: center;
-            gap: 20px;
         }
-
-        .secondary-nav-links li {
-            display: inline;
-        }
-
-        .secondary-nav-links a {
-            color: #fffcda;
-            text-decoration: none;
-            font-size: 18px;
-            padding: 5px 10px;
-            font-family: "Museo Sans Rounded", sans-serif;
-            font-weight: 400;
-            letter-spacing: 1px;
-            border-radius: 5px;
-            transition: background-color 0.3s ease, color 0.3s ease;
-        }
-
-        .secondary-nav-links a:hover {
-            background-color: #2F4156;
-            color: #fffcda;
-        }
-
-        .logout a {
-            color: #F5EFEB;
-            font-size: 16px;
-            text-decoration: none;
-        }
-
-        .logout a:hover {
-            color: #fffcda;
-            text-decoration: underline;
-        }
-
         .dashboard-content {
-            align-content: center;
             padding: 20px;
-            font-family: "Lato", sans-serif;
+        }
+        .stats-container {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+        .stat-box {
+            background-color: #fff;
+            padding: 20px;
+            flex: 1;
+            min-width: 200px;
+            text-align: center;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: transform 0.2s ease;
+        }
+        .stat-box:hover {
+            transform: translateY(-5px);
+        }
+        .stat-box i {
+            font-size: 40px;
+            color: #2F4156;
+            margin-bottom: 10px;
+        }
+        .stat-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+        }
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2F4156;
         }
     </style>
 </head>
-
 <body>
-<section>
-    <nav class="navbar">
-        <div class="navbar-content">
-            <a href="userDashboard.jsp">
-                <img src="images/logo3.png" alt="Logo" class="logo">
-            </a>
-            <div class="admin-portal">USER DASHBOARD</div>
-            <div class="user-profile">
-                <div class="username"><%= user.getUsername() %></div>
-                <div class="logout"><a href="logout.jsp">Logout</a></div>
-            </div>
-        </div>
-    </nav>
 
-    <nav class="secondary-navbar">
-        <ul class="secondary-nav-links">
-            <li><a href="userDashboard.jsp">Dashboard</a></li>
-            <li><a href="manageCustomers.jsp">Manage Customers</a></li>
-            <li><a href="items">Manage Items</a></li>
-            <li><a href="billing.jsp">Billing</a></li>
-            <li><a href="help.jsp">Help & Support</a></li>
-        </ul>
-    </nav>
-</section>
+<jsp:include page="usernavbar.jsp" />
 
 <section class="dashboard-content">
     <h2>Welcome to the User Dashboard</h2>
 
+    <div class="stats-container">
+        <div class="stat-box">
+            <i class="fas fa-users"></i>
+            <div class="stat-title">Total Customers</div>
+            <div class="stat-value"><%= totalCustomers %></div>
+        </div>
+        <div class="stat-box">
+            <i class="fas fa-box"></i>
+            <div class="stat-title">Total Items</div>
+            <div class="stat-value"><%= totalItems %></div>
+        </div>
+        <div class="stat-box">
+            <i class="fas fa-file-invoice-dollar"></i>
+            <div class="stat-title">Total Bills</div>
+            <div class="stat-value"><%= totalBills %></div>
+        </div>
+        <div class="stat-box">
+            <i class="fas fa-calendar-day"></i>
+            <div class="stat-title">Today's Customers</div>
+            <div class="stat-value"><%= todaysCustomers %></div>
+        </div>
+    </div>
 </section>
-</body>
 
+<jsp:include page="footer.jsp" />
+</body>
 </html>
