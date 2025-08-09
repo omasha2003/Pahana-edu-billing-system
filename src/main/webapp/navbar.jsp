@@ -2,14 +2,14 @@
 <%@ page import="pahana.edu.business.user.dto.UserDTO" %>
 <%
     UserDTO user = (UserDTO) session.getAttribute("user");
-    if (user == null || !"admin".equalsIgnoreCase(user.getRole())) {
+    if (user == null) {
+
         response.sendRedirect("login.jsp?error=unauthorized");
         return;
     }
+    String role = user.getRole();
 %>
 
-
-<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -19,14 +19,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@100;300;400;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <style>
-        body {
-            margin: 0;
-            font-family: "Lato", sans-serif;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-
         .navbar {
             display: flex;
             justify-content: center;
@@ -44,7 +36,7 @@
             padding: 0 30px;
         }
 
-        .admin-portal {
+        .portal-title {
             text-align: left;
             padding-left: 30px;
             flex: 1;
@@ -128,33 +120,34 @@
             color: #fffcda;
             text-decoration: underline;
         }
-
     </style>
-</head>
 
-<body>
-<section>
-    <nav class="navbar">
-        <div class="navbar-content">
-            <a href="admindashboard.jsp">
-                <img src="images/logo3.png" alt="Logo" class="logo">
-            </a>
-            <div class="admin-portal">ADMIN DASHBOARD</div>
-            <div class="user-profile">
-                <div class="username"><%= user.getUsername() %></div>
-                <div class="logout"><a href="logout.jsp">Logout</a></div>
+    <section>
+        <nav class="navbar">
+            <div class="navbar-content">
+                <a href="<%= ("admin".equalsIgnoreCase(role)) ? "admindashboard.jsp" : "userDashboard.jsp" %>">
+                    <img src="images/logo3.png" alt="Logo" class="logo" />
+                </a>
+                <div class="portal-title">
+                    <%= ("admin".equalsIgnoreCase(role)) ? "ADMIN DASHBOARD" : "USER DASHBOARD" %>
+                </div>
+                <div class="user-profile">
+                    <div class="username"><%= user.getUsername() %></div>
+                    <div class="logout"><a href="logout.jsp">Logout</a></div>
+                </div>
             </div>
-        </div>
-    </nav>
+        </nav>
 
-    <nav class="secondary-navbar">
-        <ul class="secondary-nav-links">
-            <li><a href="admindashboard.jsp">Dashboard</a></li>
-            <li><a href="customers">Manage Customers</a></li>
-            <li><a href="items">Manage Items</a></li>
-            <li><a href="billing.jsp">Billing</a></li>
-            <li><a href="manage-users">Manage Users</a></li>
-            <li><a href="help.jsp">Help & Support</a></li>
-        </ul>
-    </nav>
-</section>
+        <nav class="secondary-navbar">
+            <ul class="secondary-nav-links">
+                <li><a href="<%= ("admin".equalsIgnoreCase(role)) ? "admindashboard.jsp" : "userDashboard.jsp" %>">Dashboard</a></li>
+                <li><a href="customers">Manage Customers</a></li>
+                <li><a href="items">Manage Items</a></li>
+                <li><a href="billing.jsp">Billing</a></li>
+                <% if ("admin".equalsIgnoreCase(role)) { %>
+                <li><a href="manage-users">Manage Users</a></li>
+                <% } %>
+                <li><a href="help.jsp">Help & Support</a></li>
+            </ul>
+        </nav>
+    </section>

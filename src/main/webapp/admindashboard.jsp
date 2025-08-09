@@ -66,7 +66,7 @@
             font-weight: bold;
             color: #2F4156;
         }
-        /* Responsive for smaller screens */
+
         @media (max-width: 900px) {
             .stats-container {
                 grid-template-columns: repeat(2, 1fr);

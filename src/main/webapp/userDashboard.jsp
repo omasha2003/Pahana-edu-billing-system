@@ -71,7 +71,7 @@
 </head>
 <body>
 
-<jsp:include page="usernavbar.jsp" />
+<jsp:include page="navbar.jsp" />
 
 <section class="dashboard-content">
     <h2>Welcome to the User Dashboard</h2>
