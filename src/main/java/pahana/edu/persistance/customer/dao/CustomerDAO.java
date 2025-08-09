@@ -130,4 +130,16 @@ public class CustomerDAO {
         }
         return customer;
     }
+
+    public void incrementUnitsConsumed(int customerId) {
+        String sql = "UPDATE customers SET units_consumed = units_consumed + 1 WHERE id = ?";
+        try (Connection conn = getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, customerId);
+            stmt.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }

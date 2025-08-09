@@ -4,6 +4,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 import java.io.IOException;
+import java.security.SecureRandom;
 import java.util.*;
 
 import pahana.edu.persistance.customer.dao.CustomerDAO;
@@ -19,6 +20,7 @@ public class BillingServlet extends HttpServlet {
     private final ItemDAO itemDAO = new ItemDAO();
     private final BillService billService = new BillService();
 
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -29,14 +31,12 @@ public class BillingServlet extends HttpServlet {
         if ((accountNumber != null && !accountNumber.isEmpty()) || (telephone != null && !telephone.isEmpty())) {
             Map<String, String> customer = customerDAO.findCustomer(accountNumber, telephone);
             if (customer != null) {
-                // Store in session for persistence across requests
                 request.getSession().setAttribute("customer", customer);
             } else {
                 request.getSession().removeAttribute("customer");
             }
         }
 
-        // Forward to JSP (customer info will be read from session in JSP)
         request.getRequestDispatcher("billing.jsp").forward(request, response);
     }
 
@@ -75,7 +75,6 @@ public class BillingServlet extends HttpServlet {
 
             session.setAttribute("billItems", billItems);
 
-            // Redirect to billing.jsp to refresh and show updated bill items
             response.sendRedirect("billing.jsp");
 
         } else if ("Generate Bill".equals(action)) {
@@ -93,7 +92,9 @@ public class BillingServlet extends HttpServlet {
 
             if (billItemsList != null && !billItemsList.isEmpty()) {
                 BillDTO bill = new BillDTO();
-                bill.setBillNo(UUID.randomUUID().toString());
+
+                bill.setBillNo(generateBillNo());
+
                 bill.setCustomerId(customerId);
                 bill.setCashierName(cashierName);
                 bill.setPaymentMethod(paymentMethod);
@@ -102,10 +103,10 @@ public class BillingServlet extends HttpServlet {
                 List<BillItemDTO> billItemDTOs = new ArrayList<>();
                 for (String[] bi : billItemsList) {
                     BillItemDTO itemDTO = new BillItemDTO();
-                    itemDTO.setItemId(Integer.parseInt(bi[5])); // ID
-                    itemDTO.setQuantity(Integer.parseInt(bi[3])); // qty
-                    itemDTO.setPrice(Double.parseDouble(bi[2])); // price
-                    itemDTO.setSubtotal(Double.parseDouble(bi[4])); // subtotal
+                    itemDTO.setItemId(Integer.parseInt(bi[5]));
+                    itemDTO.setQuantity(Integer.parseInt(bi[3]));
+                    itemDTO.setPrice(Double.parseDouble(bi[2]));
+                    itemDTO.setSubtotal(Double.parseDouble(bi[4]));
                     total += itemDTO.getSubtotal();
                     billItemDTOs.add(itemDTO);
                 }
@@ -113,10 +114,14 @@ public class BillingServlet extends HttpServlet {
                 bill.setItems(billItemDTOs);
 
                 try {
-                    billService.createBill(bill);
+                    int billId = billService.createBill(bill);
+
+                    customerDAO.incrementUnitsConsumed(customerId);
+
                     session.removeAttribute("billItems");
                     session.removeAttribute("customer");
-                    response.getWriter().println("Bill generated successfully!");
+
+                    response.sendRedirect("billDetails.jsp?billId=" + billId);
                 } catch (Exception e) {
                     e.printStackTrace();
                     response.getWriter().println("Error generating bill: " + e.getMessage());
@@ -125,5 +130,14 @@ public class BillingServlet extends HttpServlet {
                 response.getWriter().println("No items in bill!");
             }
         }
+    }
+    private String generateBillNo() {
+        String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        SecureRandom random = new SecureRandom();
+        StringBuilder sb = new StringBuilder("BILL-");
+        for (int i = 0; i < 7; i++) {
+            sb.append(chars.charAt(random.nextInt(chars.length())));
+        }
+        return sb.toString();
     }
 }
