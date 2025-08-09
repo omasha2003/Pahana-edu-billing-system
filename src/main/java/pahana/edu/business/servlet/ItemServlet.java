@@ -51,6 +51,36 @@ public class ItemServlet extends HttpServlet {
             return;
         }
 
+        if ("update".equals(action)) {
+            int id = Integer.parseInt(request.getParameter("id"));
+            String title = request.getParameter("title");
+            String author = request.getParameter("author");
+            double price = Double.parseDouble(request.getParameter("price"));
+            int quantity = Integer.parseInt(request.getParameter("quantity"));
+            String category = request.getParameter("category");
+            String language = request.getParameter("language");
+
+            HttpSession session = request.getSession(false);
+            String addedBy = (session != null && session.getAttribute("username") != null)
+                    ? (String) session.getAttribute("username") : "unknown";
+
+            ItemDTO item = new ItemDTO();
+            item.setId(id);
+            item.setTitle(title);
+            item.setAuthor(author);
+            item.setPrice(price);
+            item.setQuantity(quantity);
+            item.setCategory(category);
+            item.setLanguage(language);
+            item.setAddedBy(addedBy);
+
+            itemService.updateItem(item);  // Make sure this method is implemented in service & DAO layers
+
+            response.sendRedirect("items");
+            return;
+        }
+
+        // Default is add new item
         String title = request.getParameter("title");
         String author = request.getParameter("author");
         double price = Double.parseDouble(request.getParameter("price"));

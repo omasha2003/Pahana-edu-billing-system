@@ -158,7 +158,7 @@
         <td><%= item.getAddedBy() %></td>
         <td><%= item.getAddedDate() %></td>
         <td>
-            <form action="manageItems.jsp" method="get" style="display:inline;">
+            <form action="items" method="post" style="display:inline;">
                 <input type="hidden" name="action" value="edit">
                 <input type="hidden" name="id" value="<%= item.getId() %>">
                 <button class="btn edit-btn">Edit</button>
@@ -188,5 +188,6 @@
         <p>Add New Item</p>
     </a>
 </div>
+<jsp:include page="footer.jsp" />
 </body>
 </html>
