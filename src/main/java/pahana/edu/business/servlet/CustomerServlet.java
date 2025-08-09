@@ -49,6 +49,39 @@ public class CustomerServlet extends HttpServlet {
             return;
         }
 
+        if ("update".equals(action)) {
+            int id = Integer.parseInt(request.getParameter("id"));
+            String accountNumber = request.getParameter("accountNumber");
+            String customerName = request.getParameter("customerName");
+            String address = request.getParameter("address");
+            String telephone = request.getParameter("telephone");
+            int unitsConsumed = 0;
+
+            try {
+                unitsConsumed = Integer.parseInt(request.getParameter("unitsConsumed"));
+            } catch (NumberFormatException e) {
+                // handle if needed
+            }
+
+            HttpSession session = request.getSession(false);
+            String createdBy = (session != null && session.getAttribute("username") != null)
+                    ? (String) session.getAttribute("username") : "unknown";
+
+            CustomerDTO customer = new CustomerDTO();
+            customer.setId(id);
+            customer.setAccountNumber(accountNumber);
+            customer.setCustomerName(customerName);
+            customer.setAddress(address);
+            customer.setTelephone(telephone);
+            customer.setUnitsConsumed(unitsConsumed);
+            customer.setCreatedBy(createdBy);
+
+            customerService.updateCustomer(customer);
+            response.sendRedirect("customers");
+            return;
+        }
+
+
 
         String idStr = request.getParameter("id");
         String accountNumber = request.getParameter("accountNumber");

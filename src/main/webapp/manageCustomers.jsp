@@ -184,6 +184,6 @@
         <p>Add New Customer</p>
     </a>
 </div>
-
+<jsp:include page="footer.jsp" />
 </body>
 </html>
