@@ -62,6 +62,31 @@ public class BillDAO {
         return bills;
     }
 
+    public List<BillDTO> findBillsByCustomerId(int customerId) throws ClassNotFoundException {
+        List<BillDTO> bills = new ArrayList<>();
+        String sql = "SELECT * FROM bills WHERE customer_id = ? ORDER BY bill_date DESC";
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, customerId);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    BillDTO bill = new BillDTO();
+                    bill.setId(rs.getInt("id"));                   // use setId()
+                    bill.setBillNo(rs.getString("bill_no"));
+                    bill.setTotalAmount(rs.getDouble("total_amount"));
+                    bill.setBillDate(rs.getString("bill_date"));  // String here
+                    bills.add(bill);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return bills;
+    }
+
+
     public BillDTO getBillById(int id) {
         String sql = "SELECT * FROM bills WHERE id = ?";
         try (Connection con = DBConnection.getConnection();
@@ -88,4 +113,5 @@ public class BillDAO {
             e.printStackTrace();
         }
     }
+
 }

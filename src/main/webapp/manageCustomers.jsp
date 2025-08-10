@@ -57,6 +57,14 @@
             background-color: #f2f2f2;
         }
 
+        tr.clickable-row {
+            cursor: pointer;
+        }
+
+        tr.clickable-row:hover {
+            background-color: #f0f0f0;
+        }
+
         .btn {
             padding: 6px 12px;
             margin: 2px;
@@ -89,7 +97,9 @@
             border: none;
             cursor: pointer;
             text-decoration: none;
-            box-shadow: 2px 3px 4px rgba(0, 0, 0, 0.3), 4px 7px 15px rgba(0, 0, 0, 0.3), 9px 15px 25px rgba(0, 0, 0, 0.2);
+            box-shadow: 2px 3px 4px rgba(0, 0, 0, 0.3),
+            4px 7px 15px rgba(0, 0, 0, 0.3),
+            9px 15px 25px rgba(0, 0, 0, 0.2);
             transition: transform 0.2s ease-in-out;
         }
 
@@ -144,7 +154,7 @@
         if (customers != null && !customers.isEmpty()) {
             for (CustomerDTO customer : customers) {
     %>
-    <tr>
+    <tr class="clickable-row" data-id="<%= customer.getId() %>">
         <td><%= customer.getId() %></td>
         <td><%= customer.getAccountNumber() %></td>
         <td><%= customer.getCustomerName() %></td>
@@ -154,12 +164,12 @@
         <td><%= customer.getRegistrationDate() %></td>
         <td><%= customer.getCreatedBy() %></td>
         <td>
-            <form action="customers" method="post" style="display:inline;">
+            <form action="customers" method="post" style="display:inline;" onclick="event.stopPropagation();">
                 <input type="hidden" name="action" value="edit" />
                 <input type="hidden" name="id" value="<%= customer.getId() %>" />
                 <button class="btn edit-btn" type="submit">Edit</button>
             </form>
-            <form action="customers" method="post" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this customer?');">
+            <form action="customers" method="post" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this customer?');" onclick="event.stopPropagation();">
                 <input type="hidden" name="action" value="delete" />
                 <input type="hidden" name="id" value="<%= customer.getId() %>" />
                 <button class="btn delete-btn" type="submit">Delete</button>
@@ -184,6 +194,17 @@
         <p>Add New Customer</p>
     </a>
 </div>
+
+<script>
+    // Make table rows clickable except buttons (stop event propagation on buttons)
+    document.querySelectorAll(".clickable-row").forEach(row => {
+        row.addEventListener("click", () => {
+            const customerId = row.getAttribute("data-id");
+            window.location.href = "purchaseHistory?customerId=" + customerId;
+        });
+    });
+</script>
+
 <jsp:include page="footer.jsp" />
 </body>
 </html>

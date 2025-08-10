@@ -60,7 +60,7 @@ public class CustomerServlet extends HttpServlet {
             try {
                 unitsConsumed = Integer.parseInt(request.getParameter("unitsConsumed"));
             } catch (NumberFormatException e) {
-                // handle if needed
+
             }
 
             HttpSession session = request.getSession(false);
@@ -80,7 +80,6 @@ public class CustomerServlet extends HttpServlet {
             response.sendRedirect("customers");
             return;
         }
-
 
 
         String idStr = request.getParameter("id");

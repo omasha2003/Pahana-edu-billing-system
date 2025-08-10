@@ -67,4 +67,5 @@ public class BillDTO {
     public void setItems(List<BillItemDTO> items) {
         this.items = items;
     }
+
 }

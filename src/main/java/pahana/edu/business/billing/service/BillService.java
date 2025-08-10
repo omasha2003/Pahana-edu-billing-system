@@ -4,6 +4,8 @@ import pahana.edu.business.billing.dto.BillDTO;
 import pahana.edu.business.billing.dto.BillItemDTO;
 import pahana.edu.persistance.bill.dao.BillDAO;
 
+import java.util.List;
+
 public class BillService {
     private final BillDAO billDAO = new BillDAO();
 
@@ -15,4 +17,8 @@ public class BillService {
         billDAO.saveBillItems(bill.getItems());
         return billId;
     }
+    public List<BillDTO> getBillsByCustomerId(int customerId) throws ClassNotFoundException {
+        return billDAO.findBillsByCustomerId(customerId);
+    }
+
 }
