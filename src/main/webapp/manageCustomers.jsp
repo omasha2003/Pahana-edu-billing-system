@@ -196,7 +196,6 @@
 </div>
 
 <script>
-    // Make table rows clickable except buttons (stop event propagation on buttons)
     document.querySelectorAll(".clickable-row").forEach(row => {
         row.addEventListener("click", () => {
             const customerId = row.getAttribute("data-id");

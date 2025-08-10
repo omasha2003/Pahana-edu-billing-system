@@ -34,7 +34,7 @@ public class PurchaseHistoryServlet extends HttpServlet {
         }
 
         try {
-            List<BillDTO> bills = billService.getBillsByCustomerId(customerId);
+            List<BillDTO> bills = billService.getBillsWithItemsByCustomerId(customerId);
             request.setAttribute("bills", bills);
             request.getRequestDispatcher("purchaseHistory.jsp").forward(request, response);
         } catch (ClassNotFoundException e) {

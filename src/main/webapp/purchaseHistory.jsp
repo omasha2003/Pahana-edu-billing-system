@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ page import="java.util.List" %>
 <%@ page import="pahana.edu.business.billing.dto.BillDTO" %>
+<%@ page import="pahana.edu.business.billing.dto.BillItemDTO" %>
 
 <html>
 <head>
@@ -16,19 +17,31 @@
             margin-top: 30px;
         }
 
-        table {
+        .bill-container {
             width: 90%;
-            border-collapse: collapse;
-            margin: 30px auto;
             background-color: white;
+            margin: 30px auto;
+            padding: 20px;
+            border-radius: 8px;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
-            border-radius: 6px;
-            overflow: hidden;
+        }
+
+        .bill-header {
+            font-weight: 600;
+            margin-bottom: 10px;
+            font-size: 18px;
+            color: #2F4156;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
         }
 
         th, td {
             border: 1px solid #ddd;
-            padding: 10px;
+            padding: 8px;
             text-align: center;
         }
 
@@ -78,26 +91,40 @@
 <%
     List<BillDTO> bills = (List<BillDTO>) request.getAttribute("bills");
     if (bills != null && !bills.isEmpty()) {
-%>
-<table>
-    <tr>
-        <th>Bill No</th>
-        <th>Total Amount</th>
-        <th>Date</th>
-    </tr>
-    <%
         for (BillDTO bill : bills) {
-    %>
-    <tr>
-        <td><%= bill.getBillNo() %></td>
-        <td>Rs. <%= String.format("%.2f", bill.getTotalAmount()) %></td>
-        <td><%= bill.getBillDate() %></td>
-    </tr>
-    <%
-        }
-    %>
-</table>
+%>
+<div class="bill-container">
+    <div class="bill-header"> Bill No: <%= bill.getBillNo() %> | Date: <%= bill.getBillDate() %></div>
+    <table>
+        <tr>
+            <th>Item Name</th>
+            <th>Quantity</th>
+            <th>Price (Rs.)</th>
+            <th>Subtotal (Rs.)</th>
+        </tr>
+        <%
+            List<BillItemDTO> items = bill.getItems();
+            if (items != null && !items.isEmpty()) {
+                for (BillItemDTO item : items) {
+        %>
+        <tr>
+            <td><%= item.getItemTitle() %></td>
+            <td><%= item.getQuantity() %></td>
+            <td><%= String.format("%.2f", item.getPrice()) %></td>
+            <td><%= String.format("%.2f", item.getSubtotal()) %></td>
+        </tr>
+        <%
+            }
+        } else {
+        %>
+        <tr><td colspan="4">No items found for this bill.</td></tr>
+        <%
+            }
+        %>
+    </table>
+</div>
 <%
+    }
 } else {
 %>
 <p class="no-data">No purchase history found.</p>

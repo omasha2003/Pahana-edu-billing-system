@@ -62,21 +62,41 @@ public class BillDAO {
         return bills;
     }
 
-    public List<BillDTO> findBillsByCustomerId(int customerId) throws ClassNotFoundException {
+    public List<BillDTO> findBillsWithItemsByCustomerId(int customerId) throws ClassNotFoundException {
         List<BillDTO> bills = new ArrayList<>();
-        String sql = "SELECT * FROM bills WHERE customer_id = ? ORDER BY bill_date DESC";
+        String sqlBills = "SELECT * FROM bills WHERE customer_id = ? ORDER BY bill_date DESC";
+        String sqlItems = "SELECT bi.id, bi.bill_id, bi.item_id, i.title AS item_title, bi.quantity, bi.price, bi.subtotal " +
+                "FROM bill_items bi JOIN items i ON bi.item_id = i.id WHERE bi.bill_id = ?";
 
         try (Connection conn = DBConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+             PreparedStatement psBills = conn.prepareStatement(sqlBills);
+             PreparedStatement psItems = conn.prepareStatement(sqlItems)) {
 
-            ps.setInt(1, customerId);
-            try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
+            psBills.setInt(1, customerId);
+            try (ResultSet rsBills = psBills.executeQuery()) {
+                while (rsBills.next()) {
                     BillDTO bill = new BillDTO();
-                    bill.setId(rs.getInt("id"));                   // use setId()
-                    bill.setBillNo(rs.getString("bill_no"));
-                    bill.setTotalAmount(rs.getDouble("total_amount"));
-                    bill.setBillDate(rs.getString("bill_date"));  // String here
+                    bill.setId(rsBills.getInt("id"));
+                    bill.setBillNo(rsBills.getString("bill_no"));
+                    bill.setBillDate(rsBills.getString("bill_date"));
+
+                    // Fetch items for this bill
+                    List<BillItemDTO> items = new ArrayList<>();
+                    psItems.setInt(1, bill.getId());
+                    try (ResultSet rsItems = psItems.executeQuery()) {
+                        while (rsItems.next()) {
+                            BillItemDTO item = new BillItemDTO();
+                            item.setId(rsItems.getInt("id"));
+                            item.setBillId(rsItems.getInt("bill_id"));
+                            item.setItemId(rsItems.getInt("item_id"));
+                            item.setItemTitle(rsItems.getString("item_title"));
+                            item.setQuantity(rsItems.getInt("quantity"));
+                            item.setPrice(rsItems.getDouble("price"));
+                            item.setSubtotal(rsItems.getDouble("subtotal"));
+                            items.add(item);
+                        }
+                    }
+                    bill.setItems(items);
                     bills.add(bill);
                 }
             }
@@ -113,5 +133,4 @@ public class BillDAO {
             e.printStackTrace();
         }
     }
-
 }

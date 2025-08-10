@@ -17,8 +17,9 @@ public class BillService {
         billDAO.saveBillItems(bill.getItems());
         return billId;
     }
-    public List<BillDTO> getBillsByCustomerId(int customerId) throws ClassNotFoundException {
-        return billDAO.findBillsByCustomerId(customerId);
+    public List<BillDTO> getBillsWithItemsByCustomerId(int customerId) throws ClassNotFoundException {
+        return billDAO.findBillsWithItemsByCustomerId(customerId);
     }
+
 
 }
