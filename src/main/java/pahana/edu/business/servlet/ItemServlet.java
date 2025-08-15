@@ -74,13 +74,13 @@ public class ItemServlet extends HttpServlet {
             item.setLanguage(language);
             item.setAddedBy(addedBy);
 
-            itemService.updateItem(item);  // Make sure this method is implemented in service & DAO layers
-
+            itemService.updateItem(item);
+            request.getSession().setAttribute("successMessage", "Item updated successfully!");
             response.sendRedirect("items");
             return;
         }
 
-        // Default is add new item
+
         String title = request.getParameter("title");
         String author = request.getParameter("author");
         double price = Double.parseDouble(request.getParameter("price"));
@@ -102,6 +102,7 @@ public class ItemServlet extends HttpServlet {
         item.setAddedBy(addedBy);
 
         itemService.addItem(item);
+        request.getSession().setAttribute("successMessage", "Item added successfully!");
         response.sendRedirect("items");
     }
 }

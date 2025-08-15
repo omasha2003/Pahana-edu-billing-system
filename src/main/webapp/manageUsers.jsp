@@ -1,6 +1,15 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="java.util.List" %>
 <%@ page import="pahana.edu.business.user.dto.UserDTO" %>
+
+<%
+
+    String successMessage = (String) session.getAttribute("successMessage");
+    if (successMessage != null) {
+        session.removeAttribute("successMessage");
+    }
+%>
+
 <html>
 <head>
     <title>Manage Users</title>
@@ -75,6 +84,37 @@
             color: white;
             line-height: 1;
         }
+        #toast {
+            visibility: hidden;
+            min-width: 250px;
+            margin-left: -125px;
+            background-color: #0b0a0a;
+            color: white;
+            text-align: center;
+            border-radius: 5px;
+            padding: 16px;
+            position: fixed;
+            z-index: 9999;
+            left: 50%;
+            top: 30px;
+            font-size: 16px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.3);
+        }
+
+        #toast.show {
+            visibility: visible;
+            animation: fadein 0.5s, fadeout 0.5s 3s;
+        }
+
+        @keyframes fadein {
+            from {top: 0; opacity: 0;}
+            to {top: 30px; opacity: 1;}
+        }
+
+        @keyframes fadeout {
+            from {top: 30px; opacity: 1;}
+            to {top: 0; opacity: 0;}
+        }
     </style>
 </head>
 <body>
@@ -83,11 +123,22 @@
 
 <h2 style="text-align:center;">Manage Users</h2>
 
+<% if (successMessage != null) { %>
+<div id="toast"><%= successMessage %></div>
+<script>
+    const toast = document.getElementById("toast");
+    toast.className = "show";
+    setTimeout(() => { toast.className = toast.className.replace("show", ""); }, 3500);
+</script>
+<% } %>
+
+
 <table>
     <tr>
         <th>ID</th>
         <th>Username</th>
         <th>Email</th>
+        <th>Password</th>
         <th>Role</th>
         <th>Actions</th>
     </tr>
@@ -100,6 +151,7 @@
         <td><%= user.getId() %></td>
         <td><%= user.getUsername() %></td>
         <td><%= user.getEmail() %></td>
+        <td><%= user.getPassword() %></td>
         <td><%= user.getRole() %></td>
         <td>
             <form action="manageUser.jsp" method="get" style="display:inline;">
@@ -126,6 +178,6 @@
         <p>Add New User</p>
     </a>
 </div>
-
+<jsp:include page="footer.jsp" />
 </body>
 </html>
