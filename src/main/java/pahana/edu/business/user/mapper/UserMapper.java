@@ -9,7 +9,18 @@ public class UserMapper {
         dto.setId(user.getId());
         dto.setUsername(user.getUsername());
         dto.setEmail(user.getEmail());
+        dto.setPassword(user.getPassword());
         dto.setRole(user.getRole());
         return dto;
+    }
+
+    public static User toModel(UserDTO dto) {
+        User user = new User();
+        user.setId(dto.getId());
+        user.setUsername(dto.getUsername());
+        user.setEmail(dto.getEmail());
+        user.setPassword(dto.getPassword());
+        user.setRole(dto.getRole());
+        return user;
     }
 }

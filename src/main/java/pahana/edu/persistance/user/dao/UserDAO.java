@@ -38,7 +38,7 @@ public class UserDAO {
     public List<UserDTO> getAllUsers() {
         List<UserDTO> users = new ArrayList<>();
 
-        String sql = "SELECT id, username, email, role FROM users";
+        String sql = "SELECT id, username, email, password, role FROM users";
 
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql);
@@ -49,6 +49,7 @@ public class UserDAO {
                 user.setId(rs.getInt("id"));
                 user.setUsername(rs.getString("username"));
                 user.setEmail(rs.getString("email"));
+                user.setPassword(rs.getString("password"));
                 user.setRole(rs.getString("role"));
                 users.add(user);
             }
@@ -72,6 +73,66 @@ public class UserDAO {
 
             int rowsInserted = ps.executeUpdate();
             return rowsInserted > 0;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public User getUserById(int id) {
+        User user = null;
+        String sql = "SELECT id, username, email, password, role FROM users WHERE id = ?";
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                user = new User();
+                user.setId(rs.getInt("id"));
+                user.setUsername(rs.getString("username"));
+                user.setEmail(rs.getString("email"));
+                user.setPassword(rs.getString("password"));
+                user.setRole(rs.getString("role"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return user;
+    }
+
+    // ✅ Update User
+    public boolean updateUser(User user) {
+        String sql = "UPDATE users SET username = ?, email = ?, password = ?, role = ? WHERE id = ?";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, user.getUsername());
+            ps.setString(2, user.getEmail());
+            ps.setString(3, user.getPassword());
+            ps.setString(4, user.getRole());
+            ps.setInt(5, user.getId());
+
+            int rowsUpdated = ps.executeUpdate();
+            return rowsUpdated > 0;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    // ✅ Delete User
+    public boolean deleteUser(int id) {
+        String sql = "DELETE FROM users WHERE id = ?";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, id);
+            int rowsDeleted = ps.executeUpdate();
+            return rowsDeleted > 0;
 
         } catch (Exception e) {
             e.printStackTrace();

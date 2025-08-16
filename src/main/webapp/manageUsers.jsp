@@ -154,12 +154,15 @@
         <td><%= user.getPassword() %></td>
         <td><%= user.getRole() %></td>
         <td>
-            <form action="manageUser.jsp" method="get" style="display:inline;">
+            <form action="manage-users" method="get" style="display:inline;">
+                <input type="hidden" name="action" value="edit">
                 <input type="hidden" name="id" value="<%= user.getId() %>">
                 <button class="btn manage-btn" type="submit">Manage</button>
             </form>
 
-            <form action="delete-user" method="post" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this user?');">
+
+            <form action="manage-users" method="post" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this user?');">
+                <input type="hidden" name="action" value="delete" />
                 <input type="hidden" name="id" value="<%= user.getId() %>">
                 <button class="btn delete-btn" type="submit">Delete</button>
             </form>
