@@ -23,8 +23,27 @@ public class UserService {
         return userDAO.getAllUsers();
     }
 
+    public UserDTO getUserById(int id) {
+        User user = userDAO.getUserById(id); // returns User
+        if (user != null) {
+            return UserMapper.toDTO(user); // convert to DTO
+        }
+        return null;
+    }
 
+
+    public void updateUser(UserDTO userDTO) {
+        User user = UserMapper.toModel(userDTO);
+        userDAO.updateUser(user);
+    }
+
+
+    public void deleteUser(int id) {
+        userDAO.deleteUser(id);
+    }
 
 }
+
+
 
 
